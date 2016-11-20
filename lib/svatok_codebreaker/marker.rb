@@ -16,15 +16,16 @@ module SvatokCodebreaker
     def marking_exact_matches
       @guess.each_with_index.map do |number, index|
         if number == @secret_code[index]
-          @guess[index], @secret_code[index] = nil, nil
+          @guess[index] = nil
+          @secret_code[index] = nil
           '+'
         end
-      end      
+      end
     end
 
     def marking_inexact_matches
       '-' * (@secret_code & @guess).compact.length
     end
-
   end
+  
 end

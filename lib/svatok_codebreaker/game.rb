@@ -10,17 +10,43 @@ module SvatokCodebreaker
       @guess = ''
       @attempts = ATTEMPTS
       @hint = true
-      @menu_commands = ['exit', 'restart', 'hint', 'save']
+      @menu_commands = %w(exit restart hint save)
       @codebreaker_name = 'Test'
       @file_path = File.join(File.dirname(__FILE__), 'scores.txt')
       @exit_game = false
     end
 
-    def show_rules
-      a = {}
-      a[:title] = 'sdsdsasdsadasdasdasdasdadadxcxcsds'
-      a[:take_player_name] = 'Please, enter your name:'
-      a.values
+    def show_about
+      about_game = {}
+      about_game[:title] = '
+--------------------CODEBREAKER--------------------
+       '
+      about_game[:about] = '  Codebreaker is a logic game in which a player
+tries to break a secret code created by a computer. The
+code-maker, which will be played by the application we’re
+going to write, creates a secret code of four numbers
+between 1 and 6.
+ '
+      about_game[:rules] = '  Computer creates a secret code of four numbers between 1
+and 6. You get ' + ATTEMPTS.to_s + ' chances to break the code.
+In each turn, you make a guess of four numbers. Computer
+then marks the guess with up to four + and - signs.
+  A + indicates an exact match: one of the numbers in the guess
+is the same as one of the numbers in the secret code and
+in the same position.
+  A - indicates a number match: one of the numbers in the guess
+is the same as one of the numbers in the secret code but in a
+different position.
+  At any time during a game, you can request a hint, at which
+point the system reveals one of the numbers in the
+secret code. After the game is won or lost, you can opt
+to save information about the game.
+ '
+      about_game[:commands] = 'During the game you can use the commands Exit, Restart,
+Hint, Save.
+ '
+      about_game[:take_player_name] = 'Please, enter your name:'
+      about_game.values
     end
 
     def start
@@ -59,9 +85,7 @@ module SvatokCodebreaker
       @attempts = ATTEMPTS
       @hint = true
       old_secret_code = @secret_code
-      while old_secret_code == @secret_code
-        start
-      end
+      start while old_secret_code == @secret_code
       '----------Game restarted. Enter guess:----------'
     end
 
@@ -72,9 +96,9 @@ module SvatokCodebreaker
     end
 
     def command_save
-      return 'Sorry, but command Save not available at the moment.' unless (@marking_guess == '++++' || @attempts == 0)
+      return 'Sorry, but command Save not available at the moment.' unless (@marking_guess == '++++' || @attempts.zero?)
         score_file = File.open(@file_path, 'a')
-        score_file.puts get_game_data.map{|k,v| "#{k}=#{v}"}.join(';')
+        score_file.puts get_game_data.map { |k,v| "#{k}=#{v}" }.join(';')
         score_file.close
         '----------Score saved!---------'
     end
@@ -94,7 +118,7 @@ module SvatokCodebreaker
       return false unless !!guess
       return false unless guess.length == 4
       return false unless /[1-6]+/=~guess
-      return true
+      true
     end
 
     def result_after_marking
@@ -108,20 +132,19 @@ module SvatokCodebreaker
         message_for_user[:attempts] = 'You have ' + @attempts.to_s + ' attempts.'
         message_for_user[:next_step] = 'Enter a guess:'
       end
-      message_for_user[:secret_code] = @secret_code
       message_for_user
     end
 
     def get_game_data
-      game_data = {
+      {
         codebreaker_name: @codebreaker_name,
         secret_code: @secret_code,
         marking_guess: @marking_guess,
         attempts: @attempts,
         hint: @hint == true ? 'not used' : 'used',
-        game_date: Time.now.strftime("%d/%m/%Y")
+        game_date: Time.now.strftime('%d/%m/%Y')
       }
     end
-
   end
+
 end
