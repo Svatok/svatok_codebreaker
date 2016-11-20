@@ -151,6 +151,11 @@ module SvatokCodebreaker
         game.instance_variable_set(:@attempts, 0)
         expect(game.result_after_marking[:game_end]).to eq('----------Sorry, but you lose :(----------')
       end
+      it 'show secret_code if loses' do
+        game.submit_guess('5555')
+        game.instance_variable_set(:@attempts, 0)
+        expect(game.result_after_marking[:secret_code]).to eq('Secret code is ' + game.instance_variable_get(:@secret_code).to_s)
+      end
       it 'show commands when end of game' do
         game.submit_guess('1234')
         expect(game.result_after_marking[:commands]).to eq('You can Exit/Restart/Save. Enter the desired command:')

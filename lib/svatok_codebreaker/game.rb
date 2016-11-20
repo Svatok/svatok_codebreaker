@@ -125,7 +125,10 @@ Hint, Save.
       message_for_user = {}
       message_for_user[:marking_guess] = @marking_guess
       message_for_user[:game_end] = '----------Congratulations! You win!----------' if @marking_guess == '++++'
-      message_for_user[:game_end] = '----------Sorry, but you lose :(----------' if @attempts.zero?
+      if @attempts.zero?
+        message_for_user[:secret_code] = 'Secret code is ' + @secret_code.to_s
+        message_for_user[:game_end] = '----------Sorry, but you lose :(----------'
+      end
       message_for_user[:commands] = 'You can use Hint. Enter it if you want.' if @hint
       message_for_user[:commands] = 'You can Exit/Restart/Save. Enter the desired command:' if !!message_for_user[:game_end]
       unless !!message_for_user[:game_end]
