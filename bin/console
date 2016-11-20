@@ -1,14 +1,25 @@
 #!/usr/bin/env ruby
-
 require "bundler/setup"
 require "svatok_codebreaker"
 
-# You can add fixtures and/or initialization code here to make experimenting
-# with your gem easier. You can also use a different console, if you like.
+game = SvatokCodebreaker::Game.new
+puts game.show_rules
+game.codebreaker_name = gets.chomp
+puts game.start
 
-# (If you use this, don't forget to add pry to your Gemfile!)
-# require "pry"
-# Pry.start
+until game.exit_game
+  if game.attempts > 0
+    puts ''
+    game_answer = game.codebreaker_answer(gets.chomp)
 
-require "irb"
-IRB.start
+    if game_answer.is_a?(Hash)
+      puts game_answer.values
+    else
+      puts game_answer
+      next
+    end
+  else
+    puts game.menu_command(gets.chomp)
+  end
+
+end

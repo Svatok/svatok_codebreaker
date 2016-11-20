@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module SvatokCodebreaker
   RSpec.describe Marker do
+
     context '#marking_guess' do
       it 'guess is a winning' do
         marker = Marker.new(1234, 1234)
@@ -16,5 +17,27 @@ module SvatokCodebreaker
         expect(marker.marking_guess).to match('Sorry, but there is no match...')
       end
     end
+
+    context "#marking_exact_matches" do
+      it 'marking exact matches with +' do
+        marker = Marker.new(1234, 1534)
+        expect(marker.marking_exact_matches).to match(['+', nil, '+', '+'])
+      end
+      it 'code and guess leave without exact matchec numbers' do
+        marker = Marker.new(1234, 1534)
+        marker.marking_exact_matches
+        expect(marker.instance_variable_get(:@secret_code)).to match([nil, '2', nil, nil])
+        expect(marker.instance_variable_get(:@guess)).to match([nil, '5', nil, nil])
+      end
+    end
+
+    context "#marking_inexact_matches" do
+      it 'marking inexact matches with -' do
+        marker = Marker.new(1254, 1532)
+        marker.marking_exact_matches
+        expect(marker.marking_inexact_matches).to match('--')
+      end
+    end
+
   end
 end
