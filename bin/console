@@ -2,24 +2,5 @@
 require "bundler/setup"
 require "svatok_codebreaker"
 
-game = SvatokCodebreaker::Game.new
-puts game.show_about
-game.codebreaker_name = gets.chomp
-puts game.start
-
-until game.exit_game
-  if game.attempts > 0
-    puts ''
-    game_answer = game.codebreaker_answer(gets.chomp)
-
-    if game_answer.is_a?(Hash)
-      puts game_answer.values
-    else
-      puts game_answer
-      next
-    end
-  else
-    puts game.menu_command(gets.chomp)
-  end
-
-end
+game_console = SvatokCodebreaker::ConsoleForGame.new
+game_console.prepare_game
