@@ -1,5 +1,5 @@
-require "svatok_codebreaker/version"
-
-module SvatokCodebreaker
-  # Your code goes here...
-end
+require 'svatok_codebreaker/version'
+require 'svatok_codebreaker/console_game'
+require 'svatok_codebreaker/game'
+require 'svatok_codebreaker/marker'
+require 'svatok_codebreaker/game_message'
